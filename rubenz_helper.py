@@ -182,7 +182,7 @@ def help_russians_find_gas():
             help_response_content = help_response.json()
             print("russians helped with gas station:", station_name, "at", station_lat, station_lon)
             print(help_response_content)
-            time.sleep(random.randint(5, 30))
+            time.sleep(random.randint(2, 10))
         return True
     
 
