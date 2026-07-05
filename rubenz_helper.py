@@ -22,6 +22,12 @@ def get_fingerprint() -> str:
     FINGERPRINT_FILE.write_text(value, encoding='utf-8')
     return value
 
+
+def reset_fingerprint() -> str:
+    value = secrets.token_hex(16)
+    FINGERPRINT_FILE.write_text(value, encoding='utf-8')
+    return value
+
 headers = {
     'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
     'accept-language': 'en-US,en;q=0.9',
@@ -110,7 +116,7 @@ def help_russians_find_gas():
 
         s.get(main_url, headers=headers, verify=False)
         cookieDict = s.cookies.get_dict()
-        time.sleep(random.randint(1, 3))
+        time.sleep(random.uniform(0.5, 1))
         
         lat, lon = random_ru_europe_coords()
         params = {
@@ -120,7 +126,7 @@ def help_russians_find_gas():
         }
         nearby_stations_response = s.get(nearby_url, headers=headers, cookies=cookieDict, params=params, verify=False)
         nearby_stations_response = nearby_stations_response.json()
-        time.sleep(random.randint(1, 3))
+        time.sleep(random.uniform(0.5, 1))
 
         station_list = nearby_stations_response.get('stations', [])
         for station in station_list:
@@ -146,7 +152,7 @@ def help_russians_find_gas():
                 'limit': '12',
                 'fp': fingerprint,
             }
-            time.sleep(random.randint(1, 3))
+            time.sleep(random.uniform(0.5, 1))
             comments_response = s.get(comments_url + f"/{station_id}", cookies=cookieDict, headers=headers)
             comments_response_content = comments_response.json()
             station_cvt = comments_response_content.get('cvt', '')
@@ -158,7 +164,7 @@ def help_russians_find_gas():
                 fuel_text = generate_fuel_text()
             else:
                 fuel_text = ""
-            time.sleep(random.randint(1, 3))
+            time.sleep(random.uniform(0.5, 1))
             vt_response = s.get(vt_url, cookies=cookieDict, headers=headers)
             vt_response_content = vt_response.json()
             station_vt = vt_response_content.get('vt', '')
@@ -179,10 +185,11 @@ def help_russians_find_gas():
             help_response_content = help_response.json()
             print("russians helped with gas station:", station_name, "at", station_lat, station_lon)
             print(help_response_content)
-            time.sleep(random.randint(2, 10))
+            time.sleep(1)
         return True
     
 
 while putin == "huilo":
+    reset_fingerprint()
     help_russians_find_gas()
-    time.sleep(random.randint(10, 60))
+    time.sleep(random.randint(5, 10))
