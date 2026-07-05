@@ -1,10 +1,7 @@
-from http import cookies
-import os
 import random
 import secrets
 import time
 from pathlib import Path
-
 import requests
 
 FINGERPRINT_FILE = Path(__file__).resolve().parent / "gas_cid.txt"
